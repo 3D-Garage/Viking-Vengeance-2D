@@ -13,12 +13,15 @@ public class Player : MonoBehaviour
     //Player Feet
     PolygonCollider2D myPlayersFeet;
 
+    float startingGravityScale;
+
     void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myPlayerBody = GetComponent<BoxCollider2D>();
         myPlayersFeet = GetComponent<PolygonCollider2D>();
+        startingGravityScale = myRigidbody2D.gravityScale;
     }
 
     void Update()
@@ -31,17 +34,19 @@ public class Player : MonoBehaviour
 
     private void Climb()
     {
-        if (myPlayersFeet.IsTouchingLayers(LayerMask.GetMask("Climbing")))
+        if (myPlayerBody.IsTouchingLayers(LayerMask.GetMask("Climbing")))
         {
             float controlThrow = CrossPlatformInputManager.GetAxis("Vertical");
             Vector2 climbingVelocity = new Vector2(myRigidbody2D.velocity.x, controlThrow * climingSpeed);
 
             myRigidbody2D.velocity = climbingVelocity;
             myAnimator.SetBool("Climbing", true);
+            myRigidbody2D.gravityScale = 0f;
         }
         else
         {
             myAnimator.SetBool("Climbing", false);
+            myRigidbody2D.gravityScale = startingGravityScale;
         }
     }
 
