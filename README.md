@@ -14,8 +14,8 @@ Welcome to the repository for my 2D Unity game. This project is under developmen
 - [Issue Tracking](#issue-tracking)
 - [How to Contribute](#how-to-contribute)
 - [Project Structure](#project-structure)
-- [Support](#support)
 - [Educational Links](#educational-links)
+- [Support](#support)
 
 ## Software Requirements
 
