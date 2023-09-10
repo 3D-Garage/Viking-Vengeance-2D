@@ -32,7 +32,7 @@ Welcome to the repository for my 2D Unity game. This project is under developmen
 
 ### Visual Studio 2022
 
-1. Download and install [Visual Studio 2022]([https://visualstudio.microsoft.com/](https://visualstudio.microsoft.com/free-developer-offers/))
+1. Download and install [Visual Studio 2022](https://visualstudio.microsoft.com/free-developer-offers/)
 2. Here you need the "Game development with Unity" (WorkLoads), this you should be able to download when you first set up the VS, or you already have VS than you could get it from "Video Studio Installer"
 3. Open the project in Unity and it should automatically open Visual Studio with the relevant scripts.
 
