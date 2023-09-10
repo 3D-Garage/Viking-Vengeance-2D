@@ -13,6 +13,7 @@ Welcome to the repository for my 2D Unity game. This project is under developmen
 - [Branching Strategy](#branching-strategy)
 - [Issue Tracking](#issue-tracking)
 - [How to Contribute](#how-to-contribute)
+- [Project Structure](#project-structure)
 - [Support](#support)
 - [Educational Links](#educational-links)
 
@@ -74,6 +75,25 @@ Since some members might not be familiar with Git and GitHub, we are using GitHu
 7. Commit your changes using GitHub Desktop, mentioning what you've done.
 8. Click on `Push Origin` to upload your changes to your branch.
 9. Create a Pull Request on GitHub and add an admin for __Review!__
+
+## Project Structure
+
+This Unity project uses a specific folder structure within the `Assets` directory to keep things organized. Please take a moment to familiarize yourself with this structure and try to maintain it as you contribute.
+
+### Assets Folder Structure
+
+Here are the main folders you'll find in the `Assets` directory:
+
+- **Animations**: Contains all animation-related files.
+- **Materials**: Holds material assets for 2D models and other objects.
+- **Prefabs**: Stores predefined game objects that we use frequently.
+- **Scenes**: Here you'll find all the different scenes used in the project.
+- **Scripts**: Contains all the C# scripts.
+- **Sprites**: Houses 2D images that are used in the game.
+- **Standard Assets**: A collection of common assets provided by Unity.
+- **Tiles**: Holds tile assets used for tilemaps.
+
+Please adhere to this structure when adding new files or modifying existing ones.
 
 ## Educational Links
 
