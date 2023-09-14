@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -6,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 15f;
     [SerializeField] float climingSpeed = 9f;
+    [SerializeField] Vector2 hitKick = new Vector2(50f, 50f);
     Rigidbody2D myRigidbody2D;
     Animator myAnimator;
     //Player Body
@@ -14,11 +16,13 @@ public class Player : MonoBehaviour
     PolygonCollider2D myPlayersFeet;
 
     float startingGravityScale;
+    bool isHurting = false;
 
     void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
+        //BoxCollider2D
         myPlayerBody = GetComponent<BoxCollider2D>();
         myPlayersFeet = GetComponent<PolygonCollider2D>();
         startingGravityScale = myRigidbody2D.gravityScale;
@@ -26,14 +30,46 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Run();
-        Jump();
-        Climb();
+        if (!isHurting)
+        {
+            Run();
+            Jump();
+            Climb();
+            if (myPlayerBody.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+            {
+                PlayerHit();
 
+            }
+        }
     }
+
+    private void PlayerHit()
+    {
+        myRigidbody2D.gravityScale = startingGravityScale;
+
+        myAnimator.SetBool("Climbing", false);
+
+        myRigidbody2D.velocity = hitKick * new Vector2(-transform.localScale.x, 1f);
+
+        myAnimator.SetTrigger("Hitting");
+        isHurting = true;
+        StartCoroutine(StopHurting());
+    }
+
+    IEnumerator StopHurting()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isHurting = false;
+    }
+
 
     private void Climb()
     {
+        if (isHurting)
+        {
+            return;
+        }
+
         if (myPlayerBody.IsTouchingLayers(LayerMask.GetMask("Climbing")))
         {
             float controlThrow = CrossPlatformInputManager.GetAxis("Vertical");
