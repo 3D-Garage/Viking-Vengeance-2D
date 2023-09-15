@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 15f;
-    [SerializeField] float climingSpeed = 9f;
+    [SerializeField] float climbingSpeed = 9f;
     [SerializeField] Vector2 hitKick = new Vector2(50f, 50f);
     Rigidbody2D myRigidbody2D;
     Animator myAnimator;
@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
         if (myPlayerBody.IsTouchingLayers(LayerMask.GetMask("Climbing")))
         {
             float controlThrow = CrossPlatformInputManager.GetAxis("Vertical");
-            Vector2 climbingVelocity = new Vector2(myRigidbody2D.velocity.x, controlThrow * climingSpeed);
+            Vector2 climbingVelocity = new Vector2(myRigidbody2D.velocity.x, controlThrow * climbingSpeed);
 
             myRigidbody2D.velocity = climbingVelocity;
             myAnimator.SetBool("Climbing", true);
