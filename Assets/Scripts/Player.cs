@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void PlayerHit()
+    public void PlayerHit()
     {
         myRigidbody2D.gravityScale = startingGravityScale;
 
