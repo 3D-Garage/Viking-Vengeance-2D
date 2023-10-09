@@ -43,9 +43,8 @@ public class Player : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
+
     private void PlayerHit()
-=======
     private void Attack()
     {
         if (CrossPlatformInputManager.GetButtonDown("Fire1"))
@@ -66,7 +65,6 @@ public class Player : MonoBehaviour
     }
 
     public void PlayerHit()
->>>>>>> Stashed changes
     {
         myRigidbody2D.gravityScale = startingGravityScale;
 
