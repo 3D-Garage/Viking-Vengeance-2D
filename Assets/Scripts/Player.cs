@@ -43,6 +43,27 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    private void PlayerHit()
+    private void Attack()
+    {
+        if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+        {
+            myAnimator.SetTrigger("Attacking");
+
+            Collider2D[] enemiesToHit = Physics2D.OverlapCircleAll(hurtBox.position, attackRadius, LayerMask.GetMask("Enemy"));
+
+            foreach (Collider2D enemy in enemiesToHit)
+            {
+                print("Get Rekt!!!" + enemy);
+                enemy.GetComponent<Pig>().Dying();
+
+            }
+
+
+        }
+    }
+
     public void PlayerHit()
     {
         myRigidbody2D.gravityScale = startingGravityScale;

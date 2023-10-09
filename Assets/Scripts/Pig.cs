@@ -1,26 +1,57 @@
+using System.Collections;
 using UnityEngine;
 
 public class Pig : MonoBehaviour
 {
     [SerializeField] float pigRunSpeed = 5f;
     Rigidbody2D pigRigidbody2D;
+    Animator pigAnimator;
+    bool pigDyingState = false;
     // Start is called before the first frame update
     void Start()
     {
         pigRigidbody2D = GetComponent<Rigidbody2D>();
+        pigAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (IsFacingLeft())
-        {
-            pigRigidbody2D.velocity = new Vector2(-pigRunSpeed, 0f);
+        EnemyMovement();
 
-        }
-        else
+    }
+
+    IEnumerator DestroyEnemy()
+    {
+        yield return new WaitForSeconds(2.0f);
+        Destroy(gameObject);
+
+    }
+
+    public void Dying()
+    {
+        Debug.Log("Dying method called.");
+        pigAnimator.SetTrigger("Die");
+        pigDyingState = true;
+        GetComponent<CapsuleCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().enabled = false;
+        pigRigidbody2D.bodyType = RigidbodyType2D.Static;
+        StartCoroutine(DestroyEnemy());
+    }
+
+    private void EnemyMovement()
+    {
+        if (pigDyingState != true)
         {
-            pigRigidbody2D.velocity = new Vector2(pigRunSpeed, 0f);
+            if (IsFacingLeft())
+            {
+                pigRigidbody2D.velocity = new Vector2(-pigRunSpeed, 0f);
+
+            }
+            else
+            {
+                pigRigidbody2D.velocity = new Vector2(pigRunSpeed, 0f);
+            }
         }
 
     }
