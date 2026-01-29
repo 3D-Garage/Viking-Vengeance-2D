@@ -7,12 +7,18 @@ public class Player : MonoBehaviour
     [SerializeField] float runSpeed = 10f;
     [SerializeField] float jumpSpeed = 15f;
     [SerializeField] float climbingSpeed = 9f;
+
+    [Header("Combat")]
+    [SerializeField] Transform hurtBox;          // assign in Inspector (child transform near hands/weapon)
+    [SerializeField] float attackRadius = 0.5f;  // tweak in Inspector
     [SerializeField] Vector2 hitKick = new Vector2(50f, 50f);
+
     Rigidbody2D myRigidbody2D;
     Animator myAnimator;
-    //Player Body
+
+    // Player Body
     BoxCollider2D myPlayerBody;
-    //Player Feet
+    // Player Feet
     PolygonCollider2D myPlayersFeet;
 
     float startingGravityScale;
@@ -22,54 +28,57 @@ public class Player : MonoBehaviour
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
-        //BoxCollider2D
+
         myPlayerBody = GetComponent<BoxCollider2D>();
         myPlayersFeet = GetComponent<PolygonCollider2D>();
+
         startingGravityScale = myRigidbody2D.gravityScale;
     }
 
     void Update()
     {
-        if (!isHurting)
-        {
-            Run();
-            Jump();
-            Climb();
-            if (myPlayerBody.IsTouchingLayers(LayerMask.GetMask("Enemy")))
-            {
-                PlayerHit();
+        if (isHurting) return;
 
-            }
+        Run();
+        Jump();
+        Climb();
+        Attack();
+
+        if (myPlayerBody.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        {
+            PlayerHit();
         }
     }
 
-<<<<<<< Updated upstream
-    private void PlayerHit()
-=======
     private void Attack()
     {
+        if (hurtBox == null)
+        {
+            // Prevent null reference spam if you forgot to assign it
+            return;
+        }
+
         if (CrossPlatformInputManager.GetButtonDown("Fire1"))
         {
             myAnimator.SetTrigger("Attacking");
 
-            Collider2D[] enemiesToHit = Physics2D.OverlapCircleAll(hurtBox.position, attackRadius, LayerMask.GetMask("Enemy"));
+            Collider2D[] enemiesToHit =
+                Physics2D.OverlapCircleAll(hurtBox.position, attackRadius, LayerMask.GetMask("Enemy"));
 
             foreach (Collider2D enemy in enemiesToHit)
             {
-                print("Get Rekt!!!" + enemy);
-                enemy.GetComponent<Pig>().Dying();
-
+                var pig = enemy.GetComponent<Pig>();
+                if (pig != null)
+                {
+                    pig.Dying();
+                }
             }
-
-
         }
     }
 
-    public void PlayerHit()
->>>>>>> Stashed changes
+    private void PlayerHit()
     {
         myRigidbody2D.gravityScale = startingGravityScale;
-
         myAnimator.SetBool("Climbing", false);
 
         myRigidbody2D.velocity = hitKick * new Vector2(-transform.localScale.x, 1f);
@@ -85,14 +94,8 @@ public class Player : MonoBehaviour
         isHurting = false;
     }
 
-
     private void Climb()
     {
-        if (isHurting)
-        {
-            return;
-        }
-
         if (myPlayerBody.IsTouchingLayers(LayerMask.GetMask("Climbing")))
         {
             float controlThrow = CrossPlatformInputManager.GetAxis("Vertical");
@@ -114,17 +117,18 @@ public class Player : MonoBehaviour
         float contolThrow = CrossPlatformInputManager.GetAxis("Horizontal");
         Vector2 playerVelocity = new Vector2(contolThrow * runSpeed, myRigidbody2D.velocity.y);
         myRigidbody2D.velocity = playerVelocity;
+
         FlipSprite();
         RunningStateChanging();
     }
 
     private void Jump()
     {
-        //If we arent touching the ground we wont jump in the air
         if (!myPlayersFeet.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             return;
         }
+
         bool isJumpinmg = CrossPlatformInputManager.GetButtonDown("Jump");
         if (isJumpinmg)
         {
@@ -136,9 +140,7 @@ public class Player : MonoBehaviour
     private void RunningStateChanging()
     {
         bool runningHorizantaly = Mathf.Abs(myRigidbody2D.velocity.x) > Mathf.Epsilon;
-
         myAnimator.SetBool("Running", runningHorizantaly);
-
     }
 
     private void FlipSprite()
@@ -149,5 +151,12 @@ public class Player : MonoBehaviour
         {
             transform.localScale = new Vector2(Mathf.Sign(myRigidbody2D.velocity.x), 1f);
         }
+    }
+
+    // Optional: visualize the attack radius in Scene view
+    private void OnDrawGizmosSelected()
+    {
+        if (hurtBox == null) return;
+        Gizmos.DrawWireSphere(hurtBox.position, attackRadius);
     }
 }

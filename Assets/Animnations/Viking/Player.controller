@@ -84,8 +84,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
-<<<<<<< Updated upstream
-=======
 --- !u!1101 &-5987642071116781391
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -136,7 +134,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
->>>>>>> Stashed changes
 --- !u!1101 &-4138036266016997018
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
